@@ -1,70 +1,126 @@
-###################
-What is CodeIgniter
-###################
+# Basic Web-based Payroll System
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+## Overview
 
-*******************
-Release Information
-*******************
+This is a web-based payroll management system built using:
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+- **CodeIgniter 3 (CI3)** - Backend framework for PHP
+- **AngularJS** - Frontend framework for dynamic UI
+- **Bootstrap** - Responsive and modern UI design
+- **MySQL** - Database management system
 
-**************************
-Changelog and New Features
-**************************
+This system helps organizations manage employee salaries, deductions, and payroll calculations efficiently.
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+## Features
 
-*******************
-Server Requirements
-*******************
+- Employee management (CRUD operations)
+- Salary computation (basic pay, deductions, allowances, and net pay)
+- Payroll processing (monthly, weekly, or custom periods)
+- User authentication and role-based access control
+- Reports generation (pay slips, payroll summary, etc.)
+- Responsive design for desktop and mobile devices
 
-PHP version 5.6 or newer is recommended.
+## Installation
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+### Prerequisites
 
-************
-Installation
-************
+Ensure the following are installed on your server or local development environment:
 
-Please see the `installation section <https://codeigniter.com/user_guide/installation/index.html>`_
-of the CodeIgniter User Guide.
+- PHP 7.2+
+- MySQL 5.7+
+- Apache/Nginx Web Server
+- Composer (for dependency management)
+- Node.js & NPM (for AngularJS dependencies)
 
-*******
-License
-*******
+### Setup Instructions
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+#### 1. Clone the Repository
 
-*********
-Resources
-*********
+```sh
+ git clone https://github.com/TheBlackJacketProgrammer/basic-payroll.git
+ cd payroll
+```
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+#### 2. Configure Database
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
+- Create a new MySQL database
+- Import the SQL file located in `database/payroll_db.sql`
+- Configure database settings in `application/config/database.php`
 
-***************
-Acknowledgement
-***************
+#### 3. Install Backend Dependencies
 
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+```sh
+composer install
+```
+
+#### 4. Install Frontend Dependencies
+
+```sh
+npm install
+```
+
+#### 5. Configure Base URL
+
+Modify `application/config/config.php` and update the `base_url`:
+
+```php
+$config['base_url'] = 'http://your-domain.com/';
+```
+
+#### 6. Start the Application
+
+Run the application on a local development server:
+
+```sh
+php -S localhost:8000 -t public/
+```
+
+Or configure it on Apache/Nginx with proper virtual host settings.
+
+## Usage
+
+1. Open the browser and navigate to `http://localhost`
+2. Login with the provided admin credentials (default in `users` table)
+3. Manage employees, set up payroll, and generate reports
+
+## Folder Structure
+
+```
+/payroll-system
+├── application/    # CodeIgniter backend
+├── assets/         # CSS, JS, images
+├── docs/           # Documentation files
+├── system/         # CI core files
+├── vendor/         # Composer dependencies
+├── .htaccess       # Server configuration
+├── composer.json   # Composer dependencies config
+├── contributing.md # Contribution guidelines
+├── index.php       # Main entry point
+├── license.txt     # License details
+└── readme.rst      # Readme in RST format
+```
+
+## Troubleshooting
+
+- **Issue:** Database connection error
+
+  - Ensure correct database credentials are set in `application/config/database.php`
+  - Check if MySQL service is running
+
+- **Issue:** Styles or scripts not loading
+
+  - Ensure the `base_url` is correctly set in `config.php`
+  - Check browser console for errors
+
+## Contributing
+
+Pull requests are welcome! If you'd like to improve the system, feel free to fork and submit a PR.
+
+## License
+
+MIT License. See `LICENSE` file for more details.
+
+## Contact
+
+For support, contact neomaster_667@yahoo.com or visit the project repository at [GitHub](https://github.com/TheBlackJacketProgrammer/basic-payroll.git).
+
