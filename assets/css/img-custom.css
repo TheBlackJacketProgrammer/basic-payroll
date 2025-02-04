@@ -1,0 +1,14 @@
+img-customize
+{
+ 
+}
+
+.item 
+{
+    width: 120px;
+    min-height: 500px;
+    max-height: auto;
+    float: left;
+    margin: 3px;
+    padding: 3px;
+}

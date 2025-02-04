@@ -1,0 +1,17 @@
+/* CSS Document */
+
+html.loading {
+   	background: #edeff4 url('../img/loading.gif') no-repeat;
+	background-position: center center;
+	background-attachment:fixed;
+    -webkit-transition: background-color 0;
+    transition: background-color 0;
+}
+html.loading body {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+	pointer-events: none;
+    -webkit-transition: opacity 0;
+    transition: opacity 0;
+}
+
