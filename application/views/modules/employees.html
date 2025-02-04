@@ -25,7 +25,6 @@
                                                 <th>Middle Name</th>
                                                 <th>Job Position</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-center">
@@ -45,16 +44,6 @@
                                                 <td>{{row.e_middlename}}</td>
                                                 <td>{{row.e_designation}}</td>
                                                 <td>{{row.e_status}}</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-sm" 
-                                                            ng-click="editEmployee(row); $event.stopPropagation()">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm" 
-                                                            ng-click="deleteEmployee(row); $event.stopPropagation()">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

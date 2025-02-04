@@ -90,13 +90,16 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
 
 
     $scope.loadEmployees = function() {
+        $("html").addClass("loading");
         $http({
             method: 'GET',
             url: window.appUrl + 'controller_employees/get_employees'
         }).then(function(response) {
+            $("html").removeClass("loading");
             if (response.data.success) {
                 $scope.filteredData = response.data.employees;
                 console.log('Employees loaded:', $scope.filteredData); // Debug log
+
             } else {
                 console.error('Error loading employees:', response.data.message);
             }
@@ -111,14 +114,68 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
     $scope.addEmployee = function() {
         $scope.isEditing = false;
         $scope.employee = {
-            e_num: '',
             e_lastname: '',
             e_firstname: '',
             e_middlename: '',
             e_designation: '',
-            e_status: 'Active'
+            e_status: 'Active',
+            e_type: 'Probationary' // Default value
         };
+        
+        // Generate employee number
+        $scope.generateEmployeeNumber();
+        
         $('#modalEmployee').modal('show');
+    };
+
+    $scope.generateEmployeeNumber = function() {
+        $http({
+            method: 'GET',
+            url: window.appUrl + 'controller_employees/get_latest_id'
+        }).then(function(response) {
+            if (response.data.success) {
+                // Convert latestId to number and add 1
+                var latestId = parseInt(response.data.latest_id || '0', 10);
+                var nextId = latestId + 1;
+                
+                // Get employment type prefix
+                var typePrefix = '';
+                switch($scope.employee.e_type) {
+                    case 'Probationary':
+                        typePrefix = 'P';
+                        break;
+                    case 'Contractual':
+                        typePrefix = 'C';
+                        break;
+                    case 'Regular':
+                        typePrefix = 'R';
+                        break;
+                    default:
+                        typePrefix = 'P';
+                }
+                
+                // Get current date components
+                var date = new Date();
+                var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                var year = date.getFullYear().toString().slice(-2);
+                
+                // Generate random 4-digit number
+                var randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+
+                // Ensure nextId is padded to at least 2 digits
+                var paddedId = nextId.toString().padStart(2, '0');
+                
+                // Construct employee number
+                $scope.employee.e_num = typePrefix + paddedId + '-' + month + year + '-' + randomNum;
+
+            } else {
+                console.error('Error getting latest ID:', response.data.message);
+                toastr.error('Error generating employee number');
+            }
+        }, function(error) {
+            console.error('HTTP Error:', error);
+            toastr.error('Error generating employee number');
+        });
     };
 
     $scope.editEmployee = function(employee) {
@@ -128,6 +185,7 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
     };
 
     $scope.saveEmployee = function() {
+        $("html").addClass("loading");
         var url = $scope.isEditing ? 
             window.appUrl + 'controller_employees/update_employee' :
             window.appUrl + 'controller_employees/add_employee';
@@ -146,6 +204,7 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
             url: url,
             data: data
         }).then(function(response) {
+            $("html").addClass("loading");
             if (response.data.success) {
                 $('#modalEmployee').modal('hide');
                 $scope.loadEmployees();
@@ -153,6 +212,7 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
             } else {
                 toastr.error(response.data.message);
             }
+            
         }, function(error) {
             toastr.error('An error occurred while saving the employee');
             console.error('Error:', error);
@@ -249,6 +309,7 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
     
 
     $scope.loadEmployeeData = function(index) {
+        $("html").addClass("loading");
         var currentEmployee = $scope.selectedEmployees[index];
         console.log('Loading employee:', currentEmployee); // Debug log
 
@@ -291,8 +352,10 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
                 $scope.employee.imageUrl = 'data:image/jpeg;base64,' + response.data.image;
                 $scope.employee.imageData = response.data.image;
             }
+            $("html").removeClass("loading");
         });
     };
+
 
     $scope.previousEmployee = function() {
         if ($scope.currentIndex > 0) {
@@ -323,4 +386,22 @@ payroll.controller('ngCtrlEmployees', function($scope, $http, DTOptionsBuilder, 
             reader.readAsDataURL(input.files[0]);
         }
     };
+
+    // Add this to your controller
+    $scope.$watchGroup(['employee.e_firstname', 'employee.e_middlename', 'employee.e_lastname'], function(newValues, oldValues) {
+        if ($scope.employee) {
+            var lastName = $scope.employee.e_lastname || '';
+            var firstName = $scope.employee.e_firstname || '';
+            var middleName = $scope.employee.e_middlename || '';
+            
+            $scope.employee.e_fullname = (lastName + ', ' + firstName + ' ' + middleName).trim();
+        }
+    });
+
+    // Add watch for employment type changes
+    $scope.$watch('employee.e_type', function(newValue, oldValue) {
+        if (newValue !== oldValue && !$scope.isEditing) {
+            $scope.generateEmployeeNumber();
+        }
+    });
 });

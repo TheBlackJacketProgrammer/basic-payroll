@@ -1,7 +1,7 @@
 /* CSS Document */
 
 html.loading {
-   	background: #edeff4 url('../img/loading.gif') no-repeat;
+   	background: #edeff4 url('../img/loader.gif') no-repeat;
 	background-position: center center;
 	background-attachment:fixed;
     -webkit-transition: background-color 0;

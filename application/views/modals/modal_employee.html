@@ -33,92 +33,109 @@
 				<!-- Form content with padding -->
 				<div class="container-fluid p-4">
 					<div class="row gy-4">
-						<!-- First Row -->
-						<div class="col-md-6 mb-4">
+						<!-- First Row: Image, Basic Info, and Personal Info -->
+						<div class="col-md-4 mb-4">
+							<div class="card h-100 border-0 shadow-sm">
+								<div class="card-body">
+									<h6 class="card-title text-primary fw-bold mb-3">
+										<i class="fas fa-camera mr-2"></i>Employee Photo
+									</h6>
+									<div class="text-center mb-3">
+										<img ng-src="{{employee.imageUrl || 'assets/img/employee.png'}}" 
+											 class="rounded-circle img-thumbnail" 
+											 style="width: 200px; height: 200px; object-fit: cover;">
+									</div>
+									<div class="form-group">
+										<label class="form-label fw-semibold">Upload Photo</label>
+										<input type="file" class="form-control form-control-sm" 
+											   accept="image/*" 
+											   onchange="angular.element(this).scope().handleImageUpload(this)">
+										<div class="mt-2" ng-if="loading.image">
+											<i class="fas fa-spinner fa-spin"></i> Uploading image...
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Basic Information -->
+						<div class="col-md-4 mb-4">
 							<div class="card h-100 border-0 shadow-sm">
 								<div class="card-body">
 									<h6 class="card-title text-primary fw-bold mb-3">
 										<i class="fas fa-user mr-2"></i>Basic Information
 									</h6>
-									<div class="row">
-										<div class="col-md-6">
-                                            <div class="form-group mb-3" hidden>
-												<label class="form-label fw-semibold">ID</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_id">
-											</div>
-
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Employee ID</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_num" readonly> 
-											</div>
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Last Name</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_lastname">
-											</div>
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">First Name</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_firstname">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Middle Name</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_middlename">
-											</div>
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Full Name</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_fullname">
-											</div>
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Alias/Nickname</label>
-												<input type="text" class="form-control form-control-sm" ng-model="employee.e_alias">
-											</div>
-										</div>
+									<div class="form-group mb-3" hidden>
+										<label class="form-label fw-semibold">ID</label>
+										<input type="text" class="form-control form-control-sm" ng-model="employee.e_id">
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Employee ID</label>
+										<input type="text" class="form-control form-control-sm" ng-model="employee.e_num" readonly>
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Last Name</label>
+										<input type="text" class="form-control form-control-sm" ng-model="employee.e_lastname">
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">First Name</label>
+										<input type="text" class="form-control form-control-sm" ng-model="employee.e_firstname">
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Middle Name</label>
+										<input type="text" class="form-control form-control-sm" ng-model="employee.e_middlename">
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Full Name</label>
+										<input type="text" class="form-control form-control-sm" 
+											   ng-model="employee.e_fullname" 
+											   value="{{employee.e_fullname}}"
+											   readonly>
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Alias/Nickname</label>
+										<input type="text" class="form-control form-control-sm" ng-model="employee.e_alias">
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6 mb-4">
+
+						<!-- Personal Information -->
+						<div class="col-md-4 mb-4">
 							<div class="card h-100 border-0 shadow-sm">
 								<div class="card-body">
 									<h6 class="card-title text-primary fw-bold mb-3">
 										<i class="fas fa-address-card mr-2"></i>Personal Information
 									</h6>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Birth Date</label>
-												<input type="date" class="form-control form-control-sm" ng-model="employee.e_birthdate">
-											</div>
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Gender</label>
-												<select class="form-control form-control-sm" ng-model="employee.e_gender">
-													<option value="Male">Male</option>
-													<option value="Female">Female</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Civil Status</label>
-												<select class="form-control form-control-sm" ng-model="employee.e_civilstatus">
-													<option value="Single">Single</option>
-													<option value="Married">Married</option>
-													<option value="Widowed">Widowed</option>
-													<option value="Separated">Separated</option>
-												</select>
-											</div>
-											<div class="form-group mb-3">
-												<label class="form-label fw-semibold">Address</label>
-												<textarea class="form-control form-control-sm" ng-model="employee.e_address" rows="3"></textarea>
-											</div>
-										</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Birth Date</label>
+										<input type="date" class="form-control form-control-sm" ng-model="employee.e_birthdate">
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Gender</label>
+										<select class="form-control form-control-sm" ng-model="employee.e_gender">
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+										</select>
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Civil Status</label>
+										<select class="form-control form-control-sm" ng-model="employee.e_civilstatus">
+											<option value="Single">Single</option>
+											<option value="Married">Married</option>
+											<option value="Widowed">Widowed</option>
+											<option value="Separated">Separated</option>
+										</select>
+									</div>
+									<div class="form-group mb-3">
+										<label class="form-label fw-semibold">Address</label>
+										<textarea class="form-control form-control-sm" ng-model="employee.e_address" rows="3"></textarea>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<!-- Second Row -->
+						<!-- Second Row: Government IDs and Employment Information -->
 						<div class="col-md-6 mb-4">
 							<div class="card h-100 border-0 shadow-sm">
 								<div class="card-body">
@@ -184,26 +201,6 @@
 												</select>
 											</div>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 mb-4">
-							<div class="card h-100 border-0 shadow-sm">
-								<div class="card-body">
-									<h6 class="card-title text-primary fw-bold mb-3">
-										<i class="fas fa-camera mr-2"></i>Employee Photo
-									</h6>
-									<div class="text-center mb-3">
-										<img ng-src="{{employee.imageUrl || 'assets/images/default-avatar.png'}}" 
-											 class="rounded-circle img-thumbnail" 
-											 style="width: 150px; height: 150px; object-fit: cover;">
-									</div>
-									<div class="form-group">
-										<label class="form-label fw-semibold">Upload Photo</label>
-										<input type="file" class="form-control form-control-sm" 
-											   accept="image/*" 
-											   onchange="angular.element(this).scope().handleImageUpload(this)">
 									</div>
 								</div>
 							</div>
